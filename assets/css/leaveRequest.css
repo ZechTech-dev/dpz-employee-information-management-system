@@ -1,0 +1,438 @@
+
+.content {
+    margin-left: 250px; /* same as sidebar width */
+    padding: 30px;
+    min-height: 100vh;
+
+    background: #F5F7FB;
+
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.statys {
+    display:flex;
+    justify-content:flex-end;
+
+    margin-bottom:20px;
+}
+
+
+.statys span,
+.leave span {
+    font-size:14px;
+    font-weight:600;
+    color:#0B2E6D;
+}
+
+
+select {
+    margin-left:8px;
+    padding:8px 14px;
+    border:1px solid #CBD5E1;
+    border-radius:8px;
+    background:white;
+    color:#334155;
+    cursor:pointer;
+}
+
+.leave {
+    background:white;
+    padding:20px;
+    border-radius:16px;
+    display:flex;
+    justify-content:end;
+    align-items:center;
+    gap: 30px ;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    margin-bottom:20px;
+}
+
+.leave button {
+    display: flex;
+    background:#165AC7;
+    color:white;
+    border:none;
+    gap: 8px;
+    padding:10px 15px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+}
+
+
+.leave button:hover {
+
+    background:#0B2E6D;
+
+}
+
+
+
+/* TABLE */
+
+table {
+
+    width:100%;
+    display:flexbox;
+
+    border-collapse:separate;
+
+    border-spacing:0;
+
+    background:white;
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+
+/* HEADER */
+
+thead {
+
+    background:#0B2E6D;
+
+}
+
+
+th {
+
+    padding:15px;
+
+    color:white;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    text-align:center;
+
+}
+
+
+/* BODY */
+
+td {
+
+    padding:14px;
+
+    text-align:center;
+
+    font-size:14px;
+
+    color:#334155;
+
+    border-bottom:1px solid #E5E7EB;
+
+}
+
+
+
+tbody tr:hover {
+
+    background:#EFF6FF;
+
+}
+
+
+
+/* STATUS */
+
+.status {
+
+    padding:6px 14px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    display:inline-block;
+
+}
+
+
+
+.status.approved {
+
+    background:#DCFCE7;
+
+    color:#166534;
+
+}
+
+
+
+.status.pending {
+
+    background:#FEF3C7;
+
+    color:#92400E;
+
+}
+
+
+
+.status.rejected {
+
+    background:#FEE2E2;
+
+    color:#991B1B;
+
+}
+
+
+
+/* VIEW BUTTON */
+
+.btn-view {
+
+    background:#DCE9FF;
+
+    color:#0B2E6D;
+
+    border:none;
+
+    padding:7px 18px;
+
+    border-radius:8px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+.btn-view:hover {
+
+    background:#165AC7;
+
+    color:white;
+
+}
+
+
+
+/* PAGINATION */
+
+.pagination {
+
+    margin-top:20px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    color:#64748B;
+
+    font-size:14px;
+
+}
+
+
+
+.pagination div {
+
+    display:flex;
+
+    gap:8px;
+
+}
+
+
+
+.pagination button {
+
+    width:35px;
+
+    height:35px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:white;
+
+    color:#0B2E6D;
+
+    cursor:pointer;
+
+}
+
+
+
+.pagination button.active {
+
+    background:#165AC7;
+
+    color:white;
+
+}
+
+/* MODAL BACKGROUND */
+
+.modal-overlay {
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(15,23,42,.45);
+
+    backdrop-filter:blur(3px);
+
+    z-index:999;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+
+
+/* MODAL BOX */
+
+.leave-modal {
+
+    width:500px;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    position:relative;
+
+    box-shadow:0 20px 40px rgba(0,0,0,.2);
+
+    animation:showModal .25s ease;
+
+}
+
+
+
+@keyframes showModal {
+
+    from {
+
+        opacity:0;
+
+        transform:translateY(-20px);
+
+    }
+
+    to {
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+
+.close-modal {
+
+    position:absolute;
+
+    right:20px;
+
+    top:15px;
+
+    border:none;
+
+    background:none;
+
+    font-size:28px;
+
+    color:#64748B;
+
+    cursor:pointer;
+
+}
+
+
+
+.leave-modal h2 {
+
+    color:#0B2E6D;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.modal-details {
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:15px;
+
+}
+
+
+
+.modal-details div {
+
+    background:#F8FAFC;
+
+    padding:15px;
+
+    border-radius:12px;
+
+}
+
+
+.modal-details label {
+
+    font-size:12px;
+
+    font-weight:700;
+
+    color:#64748B;
+
+}
+
+
+
+.modal-details p {
+
+    margin-top:5px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#0F172A;
+
+}
+
+
+
+.reason-box {
+
+    grid-column:span 2;
+
+}
