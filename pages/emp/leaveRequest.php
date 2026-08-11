@@ -1,3 +1,17 @@
+<?php
+
+require_once __DIR__ . '/../../config/session.php';
+
+sesh();
+
+require_once __DIR__ . '/../../config/db.php';
+require_once __DIR__ . '/../../process/emp/leaveRequestProcess.php';
+require_once __DIR__ . '/../../components/sideBar.php';
+require_once __DIR__ . '/../../components/header.php';
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,55 +23,52 @@
     <title>Leave Request</title>
 
 
-    <link rel="stylesheet" href="/dpz-eims/assets/css/global.css">
     <link rel="stylesheet" href="/dpz-eims/assets/css/components/sideBar.css">
-
     <link rel="stylesheet" href="/dpz-eims/assets/css/leaveRequest.css">
     <link rel="stylesheet" href="/dpz-eims/assets/css/viewLeave.css">
 
+    <link rel="stylesheet" href="/dpz-eims/assets/css/components/global.css">
+    <link rel="stylesheet" href="/dpz-eims/assets/css/components/header.css">
 
-    <!-- Bootstrap Icons -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
 
 </head>
 
 <body>
 
-    <?php
-
-    require_once __DIR__ . '/../../config/db.php';
-    require_once __DIR__ . '/../../config/session.php';
-
-    sesh();
-
-    require_once __DIR__ . '/../../process/leaveRequestProcess.php';
-    require_once __DIR__ . '/../../components/sideBar.php';
-
-    ?>
-
     <main class="content">
 
-        <section class="yearFilter">
-            <div class="leave">
+        <div class="space"></div>
+        <section class=" yearFilter">
 
+            <div class="leave">
                 <div class="calc">
-                    <h1>Total number of request: <?php echo $numberOfRequests; ?></h1>
+                    <h1>Total Number of Request: <?php echo $numberOfRequests; ?></h1>
                 </div>
 
                 <span>Filter:
-                    <select name="" id="">
-                        <option value="allRequest">All Status</option>
-                        <option value="approvedRequest">Approved</option>
-                        <option value="pendingRequest">Pending</option>
-                        <option value="rejectedRequest">Rejected</option>
+                    <select id="statusFilter">
+                        <option value="allRequest" <?= $status === 'allRequest' ? 'selected' : '' ?>>
+                            All Status
+                        </option>
+
+                        <option value="approvedRequest" <?= $status === 'approvedRequest' ? 'selected' : '' ?>>
+                            Approved
+                        </option>
+
+                        <option value="pendingRequest" <?= $status === 'pendingRequest' ? 'selected' : '' ?>>
+                            Pending
+                        </option>
+
+                        <option value="rejectedRequest" <?= $status === 'rejectedRequest' ? 'selected' : '' ?>>
+                            Rejected
+                        </option>
                     </select>
                 </span>
 
                 <span>
                     Year:
-                    <select>
+                    <select id="yearFilter">
                         <option value='2026'>2026</option>
                         <option value='2025'>2025</option>
                         <option value='2024'>2024</option>
@@ -173,20 +184,61 @@
         </section>
 
         <section class="pageActive">
+
             <div class="pagination">
-                <span>1-4 of 4</span>
+
+                <span>
+                    <?php if ($totalRows > 0): ?>
+
+                        <?= (($page - 1) * $limit) + 1 ?>
+                        -
+                        <?= min($page * $limit, $totalRows) ?>
+
+                    <?php else: ?>
+
+                        0
+
+                    <?php endif; ?>
+
+                    of <?= $totalRows ?>
+                </span>
 
                 <div>
 
-                    <button>
-                        < </button>
-                            <button class="active">1</button>
-                            <button>
-                                > </button>
+                    <?php if ($page > 1): ?>
+
+                        <button onclick="goToPage(<?= $page - 1 ?>)">
+                            &lt;
+                        </button>
+
+                    <?php endif; ?>
+
+
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+
+                        <button
+                            class="<?= $i == $page ? 'active' : '' ?>"
+                            onclick="goToPage(<?= $i ?>)">
+
+                            <?= $i ?>
+
+                        </button>
+
+                    <?php endfor; ?>
+
+
+                    <?php if ($page < $totalPages): ?>
+
+                        <button onclick="goToPage(<?= $page + 1 ?>)">
+                            &gt;
+                        </button>
+
+                    <?php endif; ?>
 
                 </div>
 
             </div>
+
         </section>
     </main>
 
@@ -285,7 +337,10 @@
 
                 </div>
 
-                <form id="leaveForm">
+                <form
+                    id="leaveForm"
+                    action="/dpz-eims/process/leaveRequestProcess.php"
+                    method="POST">
 
                     <!-- STEP 1 -->
                     <div class="step active" id="step1">
@@ -298,14 +353,11 @@
 
                         </p>
 
-                        <select id="leaveType" required>
-
+                        <select id="leaveType" name="leave_type" required>
                             <option value="">Choose Leave Type</option>
-
-                            <option>Sick Leave</option>
-                            <option>Vacation Leave</option>
-                            <option>Emergency Leave</option>
-
+                            <option value="Sick Leave">Sick Leave</option>
+                            <option value="Vacation Leave">Vacation Leave</option>
+                            <option value="Emergency Leave">Emergency Leave</option>
                         </select>
 
                         <div class="buttons">
@@ -333,15 +385,11 @@
 
                         <label>From</label>
 
-                        <input
-                            type="date"
-                            id="startDate">
+                        <input type="date" id="startDate" name="start_date" required>
 
                         <label>To</label>
 
-                        <input
-                            type="date"
-                            id="endDate">
+                        <input type="date" id="endDate" name="end_date" required>
 
                         <label>Total Duration</label>
 
@@ -354,8 +402,10 @@
 
                         <textarea
                             id="reason"
+                            name="reason"
                             rows="5"
-                            placeholder="Explain why you're requesting leave"></textarea>
+                            placeholder="Explain why you're requesting leave"
+                            required></textarea>
 
                         <div class="buttons">
 
@@ -475,7 +525,7 @@
         </div>
 
     </section>
-    <script src="/dpz-eims/assets/js/leaveRequest.js"></script>
+    <script src="/dpz-eims/assets/js/emp/leaveRequest.js"></script>
 </body>
 
 </html>

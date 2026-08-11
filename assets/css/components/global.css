@@ -1,0 +1,24 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:16px;
+    background:#F5F7FB;
+}
+
+.content {
+    margin-left: 260px;
+    padding: 30px;
+    min-height: 100vh;
+    background: #F5F7FB;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.space {
+    margin-bottom: 40px;
+}
+

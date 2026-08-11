@@ -62,8 +62,8 @@
     font-size: 35px;
     cursor: pointer;
     color: #64748B;
-    padding-top: 10px;
-    padding-right: 3px;
+    padding-top: 4px;
+    padding-right: 6px;
 }
 
 .close-modal:hover,

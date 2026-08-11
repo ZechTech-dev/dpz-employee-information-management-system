@@ -1,13 +1,10 @@
 <?php
 
-include __DIR__ . '/../components/sideBar.php';
+require_once __DIR__ . '/../config/session.php';
 
-/* Temporary login for testing */
-if (!isset($_SESSION['employee_name'])) {
-    $_SESSION['employee_name'] = "John Doe";
-    $_SESSION['role'] = "Employee";
-    $_SESSION['login_success'] = true;
-}
+sesh();
+
+require_once __DIR__ . '/../components/sideBar.php';
 
 $showPopup = false;
 

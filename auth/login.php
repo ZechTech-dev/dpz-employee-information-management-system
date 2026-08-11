@@ -1,5 +1,11 @@
-<?php include_once '../config/session.php';
-sesh();
+<?php
+
+require_once '../config/session.php';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,7 +56,7 @@ sesh();
                 <p>Enter your correct credentials to continue</p>
             </div>
 
-            <form class="login-page" action="../pages/dashboard.php" method="POST">
+            <form class="login-page" action="../process/loginProcess.php" method="POST">
 
                 <div class="input-id">
 
@@ -84,7 +90,7 @@ sesh();
 
                             <span>
                                 <?= $_SESSION['error'];
-                                 ?>
+                                ?>
                             </span>
 
                         </div>

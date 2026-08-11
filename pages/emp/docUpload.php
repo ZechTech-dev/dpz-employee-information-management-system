@@ -1,28 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Document Upload</title>
-
-    <link rel="stylesheet" href="/dpz-eims/assets/css/components/sideBar.css">
-
-    <link rel="stylesheet" href="/dpz-eims/assets/css/components/global.css">
-
-    <link rel="stylesheet" href="/dpz-eims/assets/css/emp/docUpload.css">
-
-    <!-- Bootstrap Icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-</head>
-
-<body>
-
     <?php
 
     require_once __DIR__ . '/../../config/db.php';
@@ -32,290 +7,329 @@
 
     require_once __DIR__ . '/../../process/emp/docUploadProcess.php';
     require_once __DIR__ . '/../../components/sideBar.php';
-
+    require_once __DIR__ . '/../../components/header.php';
     ?>
 
-    <main class="content">
+    <!DOCTYPE html>
+    <html lang="en">
 
-        <section class="docreq-head">
-            <div class="head">
+    <head>
 
-                <div class="left-head">
-                    <h1>Total of Uploaded Documents: <?php echo $documentTotal ?> </h1>
-                </div>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-                <div class="right-head">
-                    <button type="button" id="uploadBtn">
-                        <i class="bi bi-plus-circle-fill"></i>
-                        Upload New Document
-                    </button>
+        <title>Document Upload</title>
 
-                </div>
-            </div>
-        </section>
+        <link rel="stylesheet" href="/dpz-eims/assets/css/components/sideBar.css">
+        <link rel="stylesheet" href="/dpz-eims/assets/css/emp/docUpload.css">
 
-        <div class="docreq-body">
+        <link rel="stylesheet" href="/dpz-eims/assets/css/components/global.css">
+        <link rel="stylesheet" href="/dpz-eims/assets/css/components/header.css">
+        <!-- Bootstrap Icons -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-            <div class="left-body">
+    </head>
 
-                <div class="categories-header">
-                    Categories
-                </div>
 
-                <div class="categories">
+    <body>
 
-                    <!--cat - shorten term of category-->
-                    <div class="cat-item active">All Documents
+        <main class="content">
 
-                        <span class="count">
-                            <?= $categoryCounts['all'] ?? 0 ?>
-                        </span>
+            <div class="space"></div>
+            <section class="docreq-head">
+                <div class="head">
 
+                    <div class="left-head">
+                        <h1>Total of Uploaded Documents: <?php echo $documentTotal ?> </h1>
                     </div>
-                    <div class="cat-item">Personal Documents
 
-                        <span class="count">
-                            <?= $categoryCounts[2] ?? 0 ?>
-                        </span>
-
-                    </div>
-                    <div class="cat-item">Employment Documents
-
-                        <span class="count">
-                            <?= $categoryCounts[1] ?? 0 ?>
-                        </span>
-
-                    </div>
-                    <div class="cat-item">Training and Certificate
-
-                        <span class="count">
-                            <?= $categoryCounts[3] ?? 0 ?>
-                        </span>
+                    <div class="right-head">
+                        <button type="button" id="uploadBtn">
+                            <i class="bi bi-plus-circle-fill"></i>
+                            Upload New Document
+                        </button>
 
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <section class="document-table-container">
-                <div class="right-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>
-                                    Document Name
-                                </th>
+            <div class="docreq-body">
 
-                                <th>
-                                    Category
-                                </th>
+                <div class="left-body">
 
-                                <th>
-                                    Date Uploaded
-                                </th>
+                    <div class="categories-header">
+                        Categories
+                    </div>
 
-                                <th>
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
+                    <div class="categories">
 
-                        <tbody id="documentTableBody">
+                        <!--cat - shorten term of category-->
+                        <div class="cat-item active">All Documents
 
-                            <?php if ($result->num_rows > 0): ?>
+                            <span class="count">
+                                <?= $categoryCounts['all'] ?? 0 ?>
+                            </span>
 
-                                <?php while ($document = $result->fetch_assoc()): ?>
+                        </div>
+                        <div class="cat-item">Personal Documents
 
-                                    <tr class="document-row">
+                            <span class="count">
+                                <?= $categoryCounts[2] ?? 0 ?>
+                            </span>
 
-                                        <td class="document-name">
+                        </div>
+                        <div class="cat-item">Employment Documents
 
-                                            <i class="bi bi-file-earmark-text"></i>
+                            <span class="count">
+                                <?= $categoryCounts[1] ?? 0 ?>
+                            </span>
 
-                                            <span>
-                                                <?= htmlspecialchars($document['document_name']) ?>
-                                            </span>
+                        </div>
+                        <div class="cat-item">Training and Certificate
 
-                                        </td>
+                            <span class="count">
+                                <?= $categoryCounts[3] ?? 0 ?>
+                            </span>
 
-                                        <td>
-                                            <?= htmlspecialchars($document['document_type_name']) ?>
-                                        </td>
+                        </div>
+                    </div>
 
-                                        <td>
-                                            <?= date(
-                                                "F j, Y",
-                                                strtotime($document['uploaded_at'])
-                                            ) ?>
-                                        </td>
+                    <div class="supported-files">
+                        <i class="bi bi-info-circle"></i>
 
-                                        <td class="actions">
+                        <div>
+                            <strong>Supported files</strong>
+                            <span>PNG, JPG, PDF</span>
+                        </div>
+                    </div>
 
-                                            <a
-                                                href="/dpz-eims/process/emp/viewDocument.php?id=<?= $document['document_id'] ?>"
-                                                target="_blank"
-                                                title="View document">
+                </div>
 
-                                                <i class="bi bi-eye"></i>
 
-                                            </a>
+                <section class="document-table-container">
+                    <div class="right-body">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Document Name
+                                    </th>
 
-                                            <a
-                                                href="/dpz-eims/process/emp/downloadDocument.php?id=<?= $document['document_id'] ?>"
-                                                title="Download document">
+                                    <th>
+                                        Category
+                                    </th>
 
-                                                <i class="bi bi-download"></i>
+                                    <th>
+                                        Date Uploaded
+                                    </th>
 
-                                            </a>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
 
+                            <tbody id="documentTableBody">
+
+                                <?php if ($result->num_rows > 0): ?>
+
+                                    <?php while ($document = $result->fetch_assoc()): ?>
+
+                                        <tr class="document-row">
+
+                                            <td class="document-name">
+
+                                                <i class="bi bi-file-earmark-text"></i>
+
+                                                <span>
+                                                    <?= htmlspecialchars($document['document_name']) ?>
+                                                </span>
+
+                                            </td>
+
+                                            <td>
+                                                <?= htmlspecialchars($document['document_type_name']) ?>
+                                            </td>
+
+                                            <td>
+                                                <?= date(
+                                                    "F j, Y",
+                                                    strtotime($document['uploaded_at'])
+                                                ) ?>
+                                            </td>
+
+                                            <td class="actions">
+
+                                                <a
+                                                    href="/dpz-eims/process/emp/viewDocument.php?id=<?= $document['document_id'] ?>"
+                                                    target="_blank"
+                                                    title="View document">
+
+                                                    <i class="bi bi-eye"></i>
+
+                                                </a>
+
+                                                <a
+                                                    href="/dpz-eims/process/emp/downloadDocument.php?id=<?= $document['document_id'] ?>"
+                                                    title="Download document">
+
+                                                    <i class="bi bi-download"></i>
+
+                                                </a>
+
+                                            </td>
+
+                                        </tr>
+
+                                    <?php endwhile; ?>
+
+                                <?php else: ?>
+
+                                    <tr>
+
+                                        <td colspan="4" class="no-documents">
+                                            No documents uploaded yet.
                                         </td>
 
                                     </tr>
 
-                                <?php endwhile; ?>
+                                <?php endif; ?>
 
-                            <?php else: ?>
-
-                                <tr>
-
-                                    <td colspan="4" class="no-documents">
-                                        No documents uploaded yet.
-                                    </td>
-
-                                </tr>
-
-                            <?php endif; ?>
-
-                        </tbody>
+                            </tbody>
 
 
-                    </table>
-                </div>
-            </section>
-        </div>
+                        </table>
+                    </div>
+                </section>
+            </div>
 
-        <div class="upload-modal" id="uploadModal">
+            <div class="upload-modal" id="uploadModal">
 
-            <div class="upload-box">
+                <div class="upload-box">
 
-                <div class="upload-header">
+                    <div class="upload-header">
 
-                    <h2>Upload New Document</h2>
+                        <h2>Upload New Document</h2>
 
-                    <button type="button" id="closeUpload">
-                        &times;
-                    </button>
-
-                </div>
-
-
-                <div class="upload-content">
-
-                    <!-- LEFT SIDE -->
-                    <div class="upload-left">
-
-                        <form
-                            id="uploadForm"
-                            action="/dpz-eims/process/emp/uploadDocumentProcess.php"
-                            method="POST"
-                            enctype="multipart/form-data">
-
-                            <label for="documentType">
-                                Document Category
-                            </label>
-
-                            <select
-                                name="document_type_id"
-                                id="documentType"
-                                required>
-
-                                <option value="">
-                                    Select Category
-                                </option>
-
-                                <?php while ($type = $documentTypes->fetch_assoc()): ?>
-
-                                    <option
-                                        value="<?= $type['document_type_id'] ?>">
-
-                                        <?= htmlspecialchars($type['document_type_name']) ?>
-
-                                    </option>
-
-                                <?php endwhile; ?>
-
-                            </select>
-
-
-                            <label for="documentFile">
-                                Select Document
-                            </label>
-
-                            <input
-                                type="file"
-                                name="document"
-                                id="documentFile"
-                                accept=".png,.jpg,.jpeg,.pdf"
-                                required>
-
-
-                            <p id="fileName">
-                                No file selected
-                            </p>
-
-
-                            <small>
-                                Allowed files: PNG, JPG, JPEG, PDF
-                            </small>
-
-
-                            <div class="upload-buttons">
-
-                                <button
-                                    type="button"
-                                    id="cancelUpload">
-
-                                    Cancel
-
-                                </button>
-
-                                <button type="submit">
-
-                                    Upload Document
-
-                                </button>
-
-                            </div>
-
-                        </form>
+                        <button type="button" id="closeUpload">
+                            &times;
+                        </button>
 
                     </div>
 
 
-                    <!-- RIGHT SIDE -->
-                    <div class="upload-right">
+                    <div class="upload-content">
 
-                        <div class="preview-header">
+                        <!-- LEFT SIDE -->
+                        <div class="upload-left">
 
-                            <i class="bi bi-eye"></i>
+                            <form
+                                id="uploadForm"
+                                action="/dpz-eims/process/emp/docUploadProcess.php"
+                                method="POST"
+                                enctype="multipart/form-data">
 
-                            <span>Document Preview</span>
+                                <label for="documentType">
+                                    Document Category
+                                </label>
+
+                                <select
+                                    name="document_type_id"
+                                    id="documentType"
+                                    required>
+
+                                    <option value="">
+                                        Select Category
+                                    </option>
+
+                                    <?php while ($type = $documentTypes->fetch_assoc()): ?>
+
+                                        <option
+                                            value="<?= $type['document_type_id'] ?>">
+
+                                            <?= htmlspecialchars($type['document_type_name']) ?>
+
+                                        </option>
+
+                                    <?php endwhile; ?>
+
+                                </select>
+
+
+                                <label for="documentFile">
+                                    Select Document
+                                </label>
+
+                                <input
+                                    type="file"
+                                    name="document"
+                                    id="documentFile"
+                                    accept=".png,.jpg,.jpeg,.pdf"
+                                    required>
+
+
+                                <p id="fileName">
+                                    No file selected
+                                </p>
+
+
+                                <small>
+                                    Allowed files: PNG, JPG, JPEG, PDF
+                                </small>
+
+
+                                <div class="upload-buttons">
+
+                                    <button
+                                        type="button"
+                                        id="cancelUpload">
+
+                                        Cancel
+
+                                    </button>
+
+                                    <button type="submit">
+
+                                        Upload Document
+
+                                    </button>
+
+                                </div>
+
+                            </form>
 
                         </div>
 
 
-                        <div
-                            class="file-preview"
-                            id="filePreview">
+                        <!-- RIGHT SIDE -->
+                        <div class="upload-right">
 
-                            <div class="no-preview">
+                            <div class="preview-header">
 
-                                <i class="bi bi-file-earmark"></i>
+                                <i class="bi bi-eye"></i>
 
-                                <p>No document selected</p>
+                                <span>Document Preview</span>
 
-                                <span>
-                                    Select a PDF or image to preview it here.
-                                </span>
+                            </div>
+
+
+                            <div
+                                class="file-preview"
+                                id="filePreview">
+
+                                <div class="no-preview">
+
+                                    <i class="bi bi-file-earmark"></i>
+
+                                    <p>No document selected</p>
+
+                                    <span>
+                                        Select a PDF or image to preview it here.
+                                    </span>
+
+                                </div>
 
                             </div>
 
@@ -326,12 +340,10 @@
                 </div>
 
             </div>
+        </main>
 
-        </div>
-    </main>
+        <script src="/dpz-eims/assets/js/emp/docUploads.js"></script>
 
-    <script src="/dpz-eims/assets/js/docUploads.js"></script>
-    s
-</body>
+    </body>
 
-</html>
+    </html>

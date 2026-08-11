@@ -1,8 +1,15 @@
 <?php
 
-include_once __DIR__ . '/../config/session.php';
+require_once __DIR__ . '/../config/session.php';
 
-end_session();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
+$_SESSION = [];
+
+session_destroy();
+
+// Go back to login
 header("Location: /dpz-eims/auth/login.php");
 exit;
