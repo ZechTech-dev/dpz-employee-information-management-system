@@ -96,6 +96,9 @@
                         </div>
                     </div>
 
+                    <div class="note">
+                        <span>----- NOTE ------</span>
+                    </div>
                     <div class="supported-files">
                         <i class="bi bi-info-circle"></i>
 
@@ -167,7 +170,7 @@
                                                     target="_blank"
                                                     title="View document">
 
-                                                    <i class="bi bi-eye"></i>
+                                                    <i class="bi bi-eye-fill"></i>
 
                                                 </a>
 
@@ -308,7 +311,7 @@
 
                             <div class="preview-header">
 
-                                <i class="bi bi-eye"></i>
+                                <i class="bi bi-eye-fill"></i>
 
                                 <span>Document Preview</span>
 
@@ -321,7 +324,7 @@
 
                                 <div class="no-preview">
 
-                                    <i class="bi bi-file-earmark"></i>
+                                    <i class="bi bi-eye-fill"></i>
 
                                     <p>No document selected</p>
 

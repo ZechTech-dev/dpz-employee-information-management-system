@@ -43,12 +43,6 @@ $document = $result->fetch_assoc();
 $file = __DIR__ . '/../../' . $document['file_path'];
 
 
-// Check if file exists
-if (!file_exists($file)) {
-    die("File does not exist.");
-}
-
-
 // Get file type
 $mime = mime_content_type($file);
 

@@ -1,10 +1,24 @@
-<?php $name = $_SESSION['name'] ?? '';
-$role = $_SESSION['role'] ?? ''; ?>
+<?php
+$name = $_SESSION['name'] ?? '';
+$role = $_SESSION['role'] ?? '';
+
+$location = $_SERVER['REQUEST_URI'];
+
+if (str_contains($location, 'docUpload')) {
+    $headerpage = 'Document Upload';
+} elseif (str_contains($location, 'attendance')) {
+    $headerpage = 'Attendance';
+} elseif (str_contains($location, 'leave')) {
+    $headerpage = 'Leave Request';
+} else {
+    $headerpage = 'Dashboard';
+}
+?>
 <header class="main-header">
 
     <div class="servisis-page-heading">
-        <h1>Dashboard</h1>
-        <span>Employee Management System</span>
+        <h1><?= $headerpage ?></h1>
+        <span>Staff Information System</span>
     </div>
 
     <div class="servisis-header-right">
@@ -19,7 +33,7 @@ $role = $_SESSION['role'] ?? ''; ?>
         <div class="servisis-header-user">
 
             <div class="servisis-user-avatar">
-                <img src="/dpz-eims/assets/src/prof.png" alt="Profile">
+                <img src="/dpz-eims/assets/src/prof.jpg" alt="Profile">
             </div>
 
             <div class="servisis-user-info">

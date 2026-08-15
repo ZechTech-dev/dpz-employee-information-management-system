@@ -56,8 +56,6 @@
 }
 
 
-/* CATEGORIES */
-
 .left-body {
     width:300px;
     height:max-content;
@@ -111,6 +109,12 @@
     font-size:12px;
 }
 
+
+.note {
+margin: 20px 0px 10px 0px;
+justify-self: center;
+}
+
 .supported-files {
     display:flex;
     align-items:center;
@@ -118,8 +122,9 @@
     margin:5px 10px 10px;
     padding:10px 12px;
     background:#ebf2f7;
+    
     border-radius:8px;
-    border: 2px solid rgb(26, 62, 98);
+    border: 2px solid rgb(226, 230, 234);
     color:#64748B;
     font-size:12px;
 }
@@ -193,24 +198,16 @@
     border-bottom:0;
 }
 
-
-/* DOCUMENT NAME */
-
 .document-name {
-    display:flex;
-    align-items:center;
-    gap:10px;
-    text-align:left!important;
-    font-weight:500;
+    text-align: left !important;
+    font-weight: 500;
 }
 
 .document-name i {
-    color:#165AC7;
-    font-size:16px;
+    color: #165AC7;
+    font-size: 16px;
+    margin-right: 10px;
 }
-
-
-/* ACTIONS */
 
 .actions {
     white-space:nowrap;
@@ -228,17 +225,10 @@
 }
 
 
-/* EMPTY TABLE */
-
 .no-documents {
     padding:30px!important;
     color:#64748B!important;
 }
-
-
-/* =========================
-   UPLOAD MODAL
-========================= */
 
 .upload-modal {
     display:none;
@@ -261,8 +251,6 @@
     box-shadow:0 20px 40px rgba(0,0,0,.2);
 }
 
-
-/* MODAL HEADER */
 
 .upload-header {
     height:65px;
@@ -287,17 +275,12 @@
     cursor:pointer;
 }
 
-
-/* MODAL CONTENT */
-
 .upload-content {
     display:grid;
     grid-template-columns:40% 60%;
     height:calc(100% - 65px);
 }
 
-
-/* LEFT */
 
 .upload-left {
     padding:25px;
@@ -335,8 +318,6 @@
 }
 
 
-/* UPLOAD BUTTONS */
-
 .upload-buttons {
     display:flex;
     gap:10px;
@@ -370,10 +351,6 @@
 .upload-buttons button[type="submit"]:hover {
     background:#0B2E6D;
 }
-
-
-/* PREVIEW */
-
 .upload-right {
     display:flex;
     flex-direction:column;
@@ -421,36 +398,4 @@
     display:block;
     margin-bottom:10px;
     font-size:50px;
-}
-
-
-/* MOBILE */
-
-@media(max-width:750px) {
-    .content {
-        margin-left:0;
-        padding:15px;
-    }
-
-    .docreq-body {
-        flex-direction:column;
-    }
-
-    .left-body {
-        width:100%;
-        height:auto;
-    }
-
-    .upload-box {
-        height:90vh;
-    }
-
-    .upload-content {
-        grid-template-columns:1fr;
-        overflow:auto;
-    }
-
-    .upload-right {
-        height:400px;
-    }
 }

@@ -68,3 +68,16 @@ fileInput.onchange = () => {
     }
 
 };
+
+const uploadForm = document.getElementById("uploadForm");
+
+uploadForm.addEventListener("submit", (e) => {
+    const confirmed = confirm(
+        "Please make sure you have selected the correct document before continuing.\n\n" +
+        "Do you want to upload this document?"
+    );
+
+    if (!confirmed) {
+        e.preventDefault();
+    }
+});

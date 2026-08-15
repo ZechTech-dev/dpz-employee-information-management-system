@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../config/session.php';
 sesh();
 
 $employee_id = $_SESSION['employee_id'];
-$limit = 6;
+$limit = 7;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 

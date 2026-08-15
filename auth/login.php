@@ -118,8 +118,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <h4>Secure Login</h4>
 
                     <p>
-                        This portal is intended only for authorized employees.
-                        Unauthorized access is strictly prohibited.
+                        This portal is intended only for authorized employees. Unauthorized access is strictly prohibited.
                     </p>
                 </div>
 

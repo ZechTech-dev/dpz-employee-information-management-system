@@ -1,81 +1,65 @@
 console.log("Leave Request JS Loaded");
 
-function openRequestModal(){
-    const modal=document.getElementById("requestModal");
+let currentStep = 1;
 
-    if(modal){
-        modal.style.display="flex";
-        currentStep=1;
+function openRequestModal() {
+    const modal = document.getElementById("requestModal");
+
+    if (modal) {
+        modal.style.display = "flex";
+        currentStep = 1;
         showStep(currentStep);
     }
 }
 
-function closeRequestModal(){
-    const modal=document.getElementById("requestModal");
-
-    if(modal){
-        modal.style.display="none";
-    }
+function closeRequestModal() {
+    document.getElementById("requestModal").style.display = "none";
 }
 
-function closeLeaveModal(){
-    const modal=document.getElementById("leaveModal");
-
-    if(modal){
-        modal.style.display="none";
-    }
+function closeLeaveModal() {
+    document.getElementById("leaveModal").style.display = "none";
 }
 
-let currentStep=1;
+function showStep(step) {
 
-function showStep(step){
-    document.querySelectorAll(".step").forEach(function(el){
+    document.querySelectorAll(".step").forEach(list => {
+        list.classList.remove("active");
+    });
+
+    document.getElementById("step" + step)?.classList.add("active");
+
+    document.querySelectorAll(".circle").forEach(el => {
         el.classList.remove("active");
     });
 
-    const current=document.getElementById("step"+step);
-
-    if(current){
-        current.classList.add("active");
-    }
-
-    document.querySelectorAll(".circle").forEach(function(el){
-        el.classList.remove("active");
-    });
-
-    for(let i=1;i<=step;i++){
-        const circle=document.getElementById("circle"+i);
-
-        if(circle){
-            circle.classList.add("active");
-        }
+    for (let i = 1; i <= step; i++) {
+        document.getElementById("circle" + i)?.classList.add("active");
     }
 }
 
-function nextStep(){
+function nextStep() {
 
-    if(currentStep===1){
+    if (currentStep === 1) {
+        const type = document.getElementById("leaveType");
 
-        const type=document.getElementById("leaveType");
-
-        if(!type || type.value===""){
+        if (!type.value) {
             alert("Please select leave type.");
             return;
         }
     }
 
-    if(currentStep===2){
+    if (currentStep === 2) {
 
-        const start=document.getElementById("startDate");
-        const end=document.getElementById("endDate");
-        const reason=document.getElementById("reason");
+        const start = document.getElementById("startDate");
+        const end = document.getElementById("endDate");
+        const reason = document.getElementById("reason");
 
-        if(!start.value||!end.value||!reason.value.trim()){
+        if (!start.value || !end.value || !reason.value.trim()) {
             alert("Please complete all leave details.");
             return;
         }
 
-        if(end.value<start.value){
+        if (end.value < start.value) {
             alert("End date cannot be before start date.");
             return;
         }
@@ -83,238 +67,178 @@ function nextStep(){
         updateReview();
     }
 
-    if(currentStep<4){
+    if (currentStep < 4) {
         currentStep++;
         showStep(currentStep);
     }
 }
 
-function prevStep(){
+function prevStep() {
 
-    if(currentStep>1){
+    if (currentStep > 1) {
         currentStep--;
         showStep(currentStep);
     }
 }
 
-const startDate=document.getElementById("startDate");
-const endDate=document.getElementById("endDate");
-const duration=document.getElementById("duration");
+const startDate = document.getElementById("startDate");
+const endDate = document.getElementById("endDate");
+const duration = document.getElementById("duration");
 
-if(startDate&&endDate){
-    startDate.addEventListener("change",calculateDuration);
-    endDate.addEventListener("change",calculateDuration);
-}
+startDate?.addEventListener("change", calculateDuration);
+endDate?.addEventListener("change", calculateDuration);
 
-function calculateDuration(){
+function calculateDuration() {
 
-    if(!startDate.value||!endDate.value){
-        duration.value="";
+    if (!startDate.value || !endDate.value) {
+        duration.value = "";
         return;
     }
 
-    const start=new Date(startDate.value);
-    const end=new Date(endDate.value);
+    const MS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
-    const difference=(end-start)/(1000*60*60*24);
+    const start = new Date(startDate.value);
+    const end = new Date(endDate.value);
 
-    if(difference>=0){
-        duration.value=(difference+1)+" day(s)";
-    }else{
-        duration.value="Invalid date";
+    const daysBetween = Math.round((end - start) / MS_IN_A_DAY);
+
+    if (daysBetween >= 0) {
+        duration.value = (daysBetween + 1) + " day(s)";
+    } 
+    else {
+        duration.value = "Invalid date";
     }
 }
 
-function updateReview(){
+function updateReview() {
 
-    const leaveType=document.getElementById("leaveType");
-    const start=document.getElementById("startDate");
-    const end=document.getElementById("endDate");
-    const reason=document.getElementById("reason");
+    document.getElementById("reviewType").textContent =
+        document.getElementById("leaveType").value;
 
-    document.getElementById("reviewType").textContent=leaveType.value;
-    document.getElementById("reviewFrom").textContent=start.value;
-    document.getElementById("reviewTo").textContent=end.value;
-    document.getElementById("reviewDuration").textContent=duration.value;
-    document.getElementById("reviewReason").textContent=reason.value;
+    document.getElementById("reviewFrom").textContent =
+        document.getElementById("startDate").value;
+
+    document.getElementById("reviewTo").textContent =
+        document.getElementById("endDate").value;
+
+    document.getElementById("reviewDuration").textContent =
+        document.getElementById("duration").value;
+
+    document.getElementById("reviewReason").textContent =
+        document.getElementById("reason").value;
 }
+function openLeaveModal(id) {
 
-function openLeaveModal(id){
+    fetch("/dpz-eims/process/emp/viewLeaveProcess.php?id=" + id)
+        .then(response => response.json())
+        .then(data => {
 
-    fetch("/dpz-eims/process/emp/viewLeaveProcess.php?id="+encodeURIComponent(id))
-        .then(function(response){
-
-            if(!response.ok){
-                throw new Error("Failed to load leave request.");
-            }
-
-            return response.json();
-        })
-        .then(function(data){
-
-            if(data.error){
+            if (data.error) {
                 alert(data.error);
                 return;
             }
 
-            document.getElementById("modalType").textContent=data.leave_type||"";
-            document.getElementById("modalStatus").textContent=data.status||"";
-            document.getElementById("modalFiled").textContent=data.applied_at||"";
-            document.getElementById("modalFrom").textContent=data.start_date||"";
-            document.getElementById("modalTo").textContent=data.end_date||"";
-            document.getElementById("modalDuration").textContent=(data.duration||0)+" day(s)";
-            document.getElementById("modalReason").textContent=data.reason||"";
+            document.getElementById("modalType").textContent = data.leave_type || "";
+            document.getElementById("modalStatus").textContent = data.status || "";
+            document.getElementById("modalFiled").textContent = data.applied_at || "";
+            document.getElementById("modalFrom").textContent = data.start_date || "";
+            document.getElementById("modalTo").textContent = data.end_date || "";
+            document.getElementById("modalDuration").textContent = (data.duration || 0) + " day(s)";
+            document.getElementById("modalReason").textContent = data.reason || "";
 
-            const modal=document.getElementById("leaveModal");
-
-            if(modal){
-                modal.style.display="flex";
-            }
+            document.getElementById("leaveModal").style.display = "flex";
         })
-        .catch(function(error){
+        .catch(error => {
             console.error(error);
             alert("Unable to load leave request details.");
         });
 }
 
-const statusFilter=document.getElementById("statusFilter");
-const yearFilter=document.getElementById("yearFilter");
 
-function applyFilters(){
+const statusFilter = document.getElementById("statusFilter");
+const yearFilter = document.getElementById("yearFilter");
 
-    const status=statusFilter?statusFilter.value:"allRequest";
-    const year=yearFilter?yearFilter.value:new Date().getFullYear();
+function applyFilters() {
 
-    const params=new URLSearchParams();
+    const status = statusFilter?.value || "allRequest";
+    const year = yearFilter?.value || new Date().getFullYear();
 
-    params.set("status",status);
-    params.set("year",year);
-
-    window.location.href="leaveRequest.php?"+params.toString();
+    window.location.href =
+        "leaveRequest.php?status=" + status + "&year=" + year;
 }
 
-if(statusFilter){
-    statusFilter.addEventListener("change",applyFilters);
+statusFilter?.addEventListener("change", applyFilters);
+yearFilter?.addEventListener("change", applyFilters);
+
+function goToPage(page) {
+
+    const status = statusFilter?.value || "allRequest";
+    const year = yearFilter?.value || new Date().getFullYear();
+
+    window.location.href =
+        "leaveRequest.php?page=" + page +
+        "&status=" + status +
+        "&year=" + year;
 }
 
-if(yearFilter){
-    yearFilter.addEventListener("change",applyFilters);
-}
 
-function goToPage(page){
+const leaveForm = document.getElementById("leaveForm");
 
-    const status=statusFilter?statusFilter.value:"allRequest";
-    const year=yearFilter?yearFilter.value:new Date().getFullYear();
+leaveForm?.addEventListener("submit", function (event) {
 
-    const params=new URLSearchParams();
+    event.preventDefault();
 
-    params.set("page",page);
-    params.set("status",status);
-    params.set("year",year);
+    const button = leaveForm.querySelector('button[type="submit"]');
 
-    window.location.href="leaveRequest.php?"+params.toString();
-}
+    button.disabled = true;
+    button.textContent = "Submitting...";
 
-const leaveForm=document.getElementById("leaveForm");
+    fetch("/dpz-eims/process/emp/leaveRequestProcess.php", {
+        method: "POST",
+        body: new FormData(leaveForm)
+    })
+    .then(response => response.json())
+    .then(data => {
 
-if(leaveForm){
+        alert(data.message);
 
-    leaveForm.addEventListener("submit",function(event){
-
-        event.preventDefault();
-
-        const submitButton=leaveForm.querySelector('button[type="submit"]');
-
-        if(submitButton){
-            submitButton.disabled=true;
-            submitButton.textContent="Submitting...";
+        if (data.success) {
+            closeRequestModal();
+            leaveForm.reset();
+            currentStep = 1;
+            showStep(currentStep);
+            location.reload();
+        } else {
+            button.disabled = false;
+            button.textContent = "Submit Request";
         }
+    })
+    .catch(error => {
 
-        const formData=new FormData(leaveForm);
+        console.error(error);
+        alert("Something went wrong while submitting your leave request.");
 
-        fetch("/dpz-eims/process/leaveRequestProcess.php",{
-            method:"POST",
-            body:formData
-        })
-        .then(function(response){
-
-            return response.text();
-
-        })
-        .then(function(responseText){
-
-            console.log("PHP RESPONSE:");
-            console.log(responseText);
-
-            let data;
-
-            try{
-                data=JSON.parse(responseText);
-            }catch(error){
-
-                console.error("JSON ERROR:",error);
-                console.error("SERVER RESPONSE:",responseText);
-
-                alert("PHP did not return valid JSON. Check the browser console.");
-
-                if(submitButton){
-                    submitButton.disabled=false;
-                    submitButton.textContent="Submit Request";
-                }
-
-                return;
-            }
-
-            if(data.success){
-
-                alert(data.message||"Leave request submitted successfully.");
-
-                closeRequestModal();
-
-                leaveForm.reset();
-
-                currentStep=1;
-                showStep(currentStep);
-
-                window.location.reload();
-
-            }else{
-
-                alert(data.message||"Failed to submit leave request.");
-
-                if(submitButton){
-                    submitButton.disabled=false;
-                    submitButton.textContent="Submit Request";
-                }
-            }
-
-        })
-        .catch(function(error){
-
-            console.error("AJAX ERROR:",error);
-
-            alert("Something went wrong while submitting your leave request.");
-
-            if(submitButton){
-                submitButton.disabled=false;
-                submitButton.textContent="Submit Request";
-            }
-        });
+        button.disabled = false;
+        button.textContent = "Submit Request";
     });
-}
+});
 
-window.addEventListener("click",function(event){
 
-    const leaveModal=document.getElementById("leaveModal");
-    const requestModal=document.getElementById("requestModal");
+// =========================
+// CLOSE MODAL WHEN CLICKING OUTSIDE
+// =========================
 
-    if(event.target===leaveModal){
+window.addEventListener("click", event => {
+
+    if (event.target === document.getElementById("leaveModal")) {
         closeLeaveModal();
     }
 
-    if(event.target===requestModal){
+    if (event.target === document.getElementById("requestModal")) {
         closeRequestModal();
     }
 });
 
+
+// Start
 showStep(currentStep);

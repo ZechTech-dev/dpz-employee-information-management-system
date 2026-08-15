@@ -141,10 +141,18 @@ function active($page, $current)
                     <!-- EMPLOYEE -->
                 <?php elseif ($role === 'Employee'): ?>
 
+                    <a href="/dpz-eims/pages/emp/attendance.php"
+                        class="<?= active('attendance.php', $current); ?>">
+
+                        <i class="bi bi-calendar2-check-fill"></i>
+                        <span>Time in & Out</span>
+
+                    </a>
+
                     <a href="/dpz-eims/pages/emp/leaveRequest.php"
                         class="<?= active('leaveRequest.php', $current); ?>">
 
-                        <i class="bi bi-calendar-check-fill"></i>
+                        <i class="bi bi-file-earmark-text"></i>
                         <span>My Leave Request</span>
 
                     </a>
@@ -154,14 +162,6 @@ function active($page, $current)
 
                         <i class="bi bi-file-earmark-arrow-up-fill"></i>
                         <span>My Documents</span>
-
-                    </a>
-
-                    <a href="/dpz-eims/pages/emp/govInformation.php"
-                        class="<?= active('govInformation.php', $current); ?>">
-
-                        <i class="bi bi-buildings-fill"></i>
-                        <span>Time in & Out</span>
 
                     </a>
 
@@ -186,7 +186,7 @@ function active($page, $current)
             <div class="user-info">
 
                 <div class="profile">
-                    <img src="/dpz-eims/assets/src/prof.png" alt="Profile">
+                    <img src="/dpz-eims/assets/src/prof.jpg" alt="Profile">
                 </div>
 
                 <div class="user-details">

@@ -1,0 +1,328 @@
+.content {
+    padding-bottom: 30px;
+}
+
+.attendance-wrapper {
+    width: 100%;
+    margin-top: 20px;
+    background: #0B2E6D;
+    border: none;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(11, 46, 109, 0.18);
+}
+
+.attendance-top {
+    min-height: 105px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 28px;
+    box-sizing: border-box;
+    background: #0B2E6D;
+}
+
+.today-info,
+.current-time {
+    display: flex;
+    flex-direction: column;
+}
+
+.today-info {
+    gap: 5px;
+}
+
+.current-time {
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.today-info span,
+.current-time span {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #9FC0EC;
+}
+
+.today-info strong {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.current-time strong {
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.attendance-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    background: #CADBF5;
+}
+
+.attendance-box {
+    min-height: 190px;
+    padding: 22px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    background: #ffffff;
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.attendance-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(11, 46, 109, 0.12);
+}
+
+.attendance-icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #E7F0FC;
+    color: #5689D2;
+}
+
+.attendance-icon i {
+    font-size: 19px;
+}
+
+.attendance-box > span {
+    margin-bottom: 7px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+    color: #0B2E6D;
+}
+
+.attendance-box > strong {
+    min-height: 25px;
+    margin-bottom: 15px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #0B2E6D;
+}
+
+.attendance-box button {
+    min-width: 105px;
+    padding: 9px 15px;
+    border: none;
+    border-radius: 6px;
+    background: #5689D2;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.attendance-box button:hover:not(:disabled) {
+    background: #0B2E6D;
+    transform: translateY(-1px);
+}
+
+.attendance-box button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.attendance-box button:disabled {
+    background: #D9E3F0;
+    color: #91A5BE;
+    cursor: not-allowed;
+}
+
+.attendance-records {
+    width: 100%;
+    margin-top: 25px;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #ffffff;
+    border: 1px solid #DCE6F2;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 5px 18px rgba(11, 46, 109, 0.07);
+    font-size: 13px;
+}
+
+.attendance-records .table-title {
+    padding: 18px 22px;
+    background: #ffffff;
+    color: #0B2E6D;
+    text-align: left;
+    font-size: 19px;
+    font-weight: 700;
+    border-bottom: 1px solid #E2EAF4;
+}
+
+.attendance-records thead tr:nth-child(2) {
+    background: #0B2E6D;
+}
+
+.attendance-records thead tr:nth-child(2) th {
+    padding: 13px 15px;
+    background: #0B2E6D;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.attendance-records thead tr:nth-child(2) th:first-child {
+    text-align: left;
+}
+
+.attendance-records tbody td {
+    padding: 14px 15px;
+    text-align: center;
+    font-size: 13px;
+    color: #475569;
+    border-bottom: 1px solid #E8EEF5;
+    white-space: nowrap;
+}
+
+.attendance-records tbody td:first-child {
+    text-align: left;
+    color: #0B2E6D;
+    font-weight: 600;
+}
+
+.attendance-records tbody tr {
+    transition: background 0.15s ease;
+}
+
+.attendance-records tbody tr:hover {
+    background: #F3F8FE;
+}
+
+.attendance-records tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    box-sizing: border-box;
+}
+
+.status.present {
+    background: #DFF3E4;
+    color: #28733B;
+}
+
+.status.late {
+    background: #FFF0C7;
+    color: #9A6500;
+}
+
+.status.absent {
+    background: #FDE2E2;
+    color: #A52A2A;
+}
+
+.status.day-off {
+    background: #E8EDF3;
+    color: #526174;
+}
+
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pagination div {
+    display: flex;
+    gap: 8px;
+}
+
+.pagination button {
+    width: 35px;
+    height: 35px;
+    border: 1px solid #D7E3F2;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #0B2E6D;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.pagination button:hover {
+    background: #DCE9FF;
+}
+
+.pagination button.active {
+    background: #165AC7;
+    border-color: #165AC7;
+    color: #ffffff;
+}
+
+@media (max-width: 900px) {
+    .attendance-top {
+        padding: 20px;
+    }
+
+    .attendance-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .attendance-records {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 650px) {
+    .attendance-top {
+        min-height: auto;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .current-time {
+        align-items: flex-start;
+    }
+
+    .attendance-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .attendance-box {
+        min-height: 170px;
+    }
+
+    .today-info strong {
+        font-size: 16px;
+    }
+
+    .current-time strong {
+        font-size: 22px;
+    }
+
+    .pagination {
+        gap: 15px;
+    }
+}
