@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../config/session.php';
 sesh();
 
 $employee_id = $_SESSION['employee_id'];
-$limit = 7;
+$limit = 10;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -73,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'success' => false,
             'message' => 'Failed to save leave request.'
         ]);
+
         $stmt->close();
         exit;
     }
@@ -83,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'success' => true,
         'message' => 'Leave request submitted successfully.'
     ]);
+
     exit;
 }
 
@@ -96,27 +98,28 @@ $page = isset($_GET['page'])
     ? max(1, (int) $_GET['page'])
     : 1;
 
-$offset = ($page - 1) * $limit;
-
 $where = "WHERE employee_id = ?";
-
 $params = [$employee_id];
 $types = "s";
 
 if ($status !== 'allRequest') {
 
-    $statusValue = ucfirst(
-        str_replace('Request', '', $status)
-    );
+    $statusValue = str_replace('Request', '', $status);
+
+    if ($statusValue === 'approved') {
+        $statusValue = 'Approved';
+    } elseif ($statusValue === 'pending') {
+        $statusValue = 'Pending';
+    } elseif ($statusValue === 'rejected') {
+        $statusValue = 'Rejected';
+    }
 
     $where .= " AND status = ?";
-
     $params[] = $statusValue;
     $types .= "s";
 }
 
 $where .= " AND YEAR(applied_at) = ?";
-
 $params[] = $year;
 $types .= "i";
 
@@ -133,9 +136,10 @@ $countStmt->bind_param(
 
 $countStmt->execute();
 
-$totalRows = (int) $countStmt
-    ->get_result()
-    ->fetch_assoc()['total'];
+$countResult = $countStmt->get_result();
+$countRow = $countResult->fetch_assoc();
+
+$totalRows = (int) $countRow['total'];
 
 $countStmt->close();
 
@@ -143,6 +147,12 @@ $totalPages = max(
     1,
     (int) ceil($totalRows / $limit)
 );
+
+if ($page > $totalPages) {
+    $page = $totalPages;
+}
+
+$offset = ($page - 1) * $limit;
 
 $queryParams = $params;
 $queryTypes = $types;
@@ -152,20 +162,30 @@ $queryParams[] = $offset;
 
 $queryTypes .= "ii";
 
-$stmt = $connected->prepare("
-    SELECT *
+$leaveStmt = $connected->prepare("
+    SELECT
+        request_id,
+        employee_id,
+        leave_type,
+        start_date,
+        end_date,
+        reason,
+        status,
+        approved_by,
+        applied_at
     FROM leave_requests
     $where
     ORDER BY applied_at DESC
     LIMIT ? OFFSET ?
 ");
 
-$stmt->bind_param(
+$leaveStmt->bind_param(
     $queryTypes,
     ...$queryParams
 );
 
-$stmt->execute();
+$leaveStmt->execute();
 
-$result = $stmt->get_result();
+$leaveResult = $leaveStmt->get_result();
+
 $numberOfRequests = $totalRows;

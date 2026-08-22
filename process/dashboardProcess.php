@@ -77,8 +77,6 @@ $stmt = $connected->prepare("
         COUNT(*) AS total_count
     FROM attendance
     WHERE employee_id = ?
-    AND MONTH(date) = MONTH(CURDATE())
-    AND YEAR(date) = YEAR(CURDATE())
 ");
 $stmt->bind_param("s", $employee_id);
 $stmt->execute();

@@ -16,7 +16,7 @@ require_once __DIR__ . '/../../components/header.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time In and Out</title>
+    <title>Attendance</title>
 
     <link rel="stylesheet" href="/dpz-eims/assets/css/components/sidebar.css">
     <link rel="stylesheet" href="/dpz-eims/assets/css/components/header.css">
@@ -135,7 +135,7 @@ require_once __DIR__ . '/../../components/header.php';
 
             <tbody id="attendanceTableBody">
 
-                <?php while ($row = $result->fetch_assoc()): ?>
+                <?php foreach ($attendanceRecords as $row): ?>
 
                     <tr>
 
@@ -148,46 +148,62 @@ require_once __DIR__ . '/../../components/header.php';
                         </td>
 
                         <td>
-                            <?= !empty($row['time_in']) ? $row['time_in'] : '---' ?>
+                            <?= !empty($row['time_in'])
+                                ? date("h:i A", strtotime($row['time_in']))
+                                : '---'
+                            ?>
                         </td>
 
                         <td>
-                            <?= !empty($row['time_out']) ? $row['time_out'] : '---' ?>
+                            <?= !empty($row['time_out'])
+                                ? date("h:i A", strtotime($row['time_out']))
+                                : '---'
+                            ?>
                         </td>
 
                         <td>
-                            <?= $row['break_hours'] !== null ? $row['break_hours'] : '---' ?>
+                            <?= $row['break_hours'] !== null
+                                ? $row['break_hours']
+                                : '---'
+                            ?>
                         </td>
 
                         <td>
-                            <?= $row['total_hours'] !== null ? $row['total_hours'] : '---' ?>
+                            <?= $row['total_hours'] !== null
+                                ? $row['total_hours']
+                                : '---'
+                            ?>
                         </td>
 
                         <td>
 
-                            <?php if ($row['status'] == 'Present'): ?>
+                            <?php if ($row['status'] === 'Present'): ?>
 
                                 <span class="status present">
                                     Present
                                 </span>
 
-                            <?php elseif ($row['status'] == 'Late'): ?>
+                            <?php elseif ($row['status'] === 'Late'): ?>
 
                                 <span class="status late">
                                     Late
                                 </span>
 
-                            <?php elseif ($row['status'] == 'Absent'): ?>
+                            <?php elseif ($row['status'] === 'Absent'): ?>
 
                                 <span class="status absent">
                                     Absent
                                 </span>
 
-                            <?php elseif ($row['status'] == 'Day Off'): ?>
+                            <?php elseif ($row['status'] === 'Day Off'): ?>
 
                                 <span class="status day-off">
                                     Day Off
                                 </span>
+
+                            <?php else: ?>
+
+                                <?= htmlspecialchars($row['status']) ?>
 
                             <?php endif; ?>
 
@@ -195,7 +211,7 @@ require_once __DIR__ . '/../../components/header.php';
 
                     </tr>
 
-                <?php endwhile; ?>
+                <?php endforeach; ?>
 
             </tbody>
 

@@ -1,11 +1,40 @@
 <?php
 
 require_once __DIR__ . '/../config/session.php';
+require_once __DIR__ . '/../config/db.php';
 
 sesh();
 
 $role = $_SESSION['role'] ?? '';
 $name = $_SESSION['employee_name'] ?? '';
+$employee_id = $_SESSION['employee_id'] ?? '';
+
+
+// Default picture
+$profileImage = 'default-picture.jpg';
+
+
+// Get logged-in user's profile picture (no process file for sidebar)
+$stmt = $connected->prepare("
+    SELECT profile_picture
+    FROM users
+    WHERE employee_id = ?
+");
+
+$stmt->bind_param("s", $employee_id);
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+if ($user = $result->fetch_assoc()) {
+
+    if (!empty($user['profile_picture'])) {
+        $profileImage = $user['profile_picture'];
+    }
+}
+
+$stmt->close();
+
 
 $current = basename($_SERVER['PHP_SELF']);
 
@@ -16,9 +45,10 @@ function active($page, $current)
 
 ?>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="/dpz-eims/assets/css/global.css">
 <link rel="stylesheet" href="/dpz-eims/assets/css/components/sideBar.css">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 
 <aside class="sidebar">
 
@@ -45,8 +75,8 @@ function active($page, $current)
                     MAIN
                 </div>
 
-                <!-- Dashboard - everyone -->
-                <a href="/dpz-eims/pages/dashboard.php"
+                <!-- Dashboard/visible to ol -->
+                <a href="/dpz-eims/pages/common/dashboard.php"
                     class="<?= active('dashboard.php', $current); ?>">
 
                     <i class="bi bi-house-door-fill"></i>
@@ -54,11 +84,18 @@ function active($page, $current)
 
                 </a>
 
+                <a href="/dpz-eims/pages/common/attendance.php"
+                    class="<?= active('attendance.php', $current); ?>">
+
+                    <i class="bi bi-calendar2-check-fill"></i>
+                    <span>Attendance</span>
+
+                </a>
+
                 <div class="nav-section-title">
                     MANAGEMENT
                 </div>
 
-                <!-- MANAGER -->
                 <?php if ($role === 'Manager'): ?>
 
                     <a href="/dpz-eims/pages/manager/empMlist.php"
@@ -77,77 +114,18 @@ function active($page, $current)
 
                     </a>
 
-                    <a href="/dpz-eims/pages/manager/docUploadM.php"
-                        class="<?= active('docUploadM.php', $current); ?>">
+                    <a href="/dpz-eims/pages/manager/documentsM.php"
+                        class="<?= active('documentsM.php', $current); ?>">
 
                         <i class="bi bi-file-earmark-arrow-up-fill"></i>
                         <span>Document Management</span>
 
                     </a>
 
-                    <a href="/dpz-eims/pages/manager/govInformationM.php"
-                        class="<?= active('govInformationM.php', $current); ?>">
-
-                        <i class="bi bi-buildings-fill"></i>
-                        <span>Time in & Out</span>
-
-                    </a>
-
-                    <a href="/dpz-eims/pages/manager/reports.php"
-                        class="<?= active('reports.php', $current); ?>">
-
-                        <i class="bi bi-flag-fill"></i>
-                        <span>Reports</span>
-
-                    </a>
 
 
-                    <!-- TECH -->
-                <?php elseif ($role === 'Tech'): ?>
-
-                    <a href="/dpz-eims/pages/tech/leaveManagementT.php"
-                        class="<?= active('leaveManagementT.php', $current); ?>">
-
-                        <i class="bi bi-calendar-check-fill"></i>
-                        <span>Leave Records</span>
-
-                    </a>
-
-                    <a href="/dpz-eims/pages/tech/docUploadT.php"
-                        class="<?= active('docUploadT.php', $current); ?>">
-
-                        <i class="bi bi-file-earmark-arrow-up-fill"></i>
-                        <span>Document Records</span>
-
-                    </a>
-
-                    <a href="/dpz-eims/pages/tech/govInformationT.php"
-                        class="<?= active('govInformationT.php', $current); ?>">
-
-                        <i class="bi bi-buildings-fill"></i>
-                        <span>Gov. Information</span>
-
-                    </a>
-
-                    <a href="/dpz-eims/pages/tech/changePass.php"
-                        class="<?= active('changePass.php', $current); ?>">
-
-                        <i class="bi bi-shield-lock-fill"></i>
-                        <span>Change Password</span>
-
-                    </a>
-
-
-                    <!-- EMPLOYEE -->
+                    <!-- RBAC -->
                 <?php elseif ($role === 'Employee'): ?>
-
-                    <a href="/dpz-eims/pages/emp/attendance.php"
-                        class="<?= active('attendance.php', $current); ?>">
-
-                        <i class="bi bi-calendar2-check-fill"></i>
-                        <span>Time in & Out</span>
-
-                    </a>
 
                     <a href="/dpz-eims/pages/emp/leaveRequest.php"
                         class="<?= active('leaveRequest.php', $current); ?>">
@@ -166,7 +144,7 @@ function active($page, $current)
                     </a>
 
 
-                    <!-- INVALID ROLE -->
+                    <!-- role not in the access control -->
                 <?php else: ?>
 
                     <?php
@@ -181,22 +159,26 @@ function active($page, $current)
 
         </nav>
 
+        <div class="sidebar-city">
+            <img src="/dpz-eims/assets/src/bg.png" alt="">
+        </div>
+
         <div class="sidebar-bottom">
 
             <div class="user-info">
 
                 <div class="profile">
-                    <img src="/dpz-eims/assets/src/prof.jpg" alt="Profile">
+                    <img
+                        src="/dpz-eims/uploads/profile/<?= htmlspecialchars($profileImage) ?>"
+                        alt="Profile">
                 </div>
 
                 <div class="user-details">
                     <h6><?php echo $name ?></h6>
-                    <small><?php
-                            echo $role; ?></small>
+                    <small><?php echo $role; ?></small>
                 </div>
 
             </div>
-
 
             <a href="/dpz-eims/process/logoutProcess.php" class="logout-btn">
                 <i class="bi bi-box-arrow-left"></i>

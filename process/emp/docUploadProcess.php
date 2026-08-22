@@ -117,7 +117,13 @@ $stmt->execute();
 
 $result = $stmt->get_result();
 
-$documentTotal = $result->num_rows;
+$documents = [];
+
+while ($row = $result->fetch_assoc()) {
+    $documents[] = $row;
+}
+
+$documentTotal = count($documents);
 
 $countStmt = $connected->prepare("
     SELECT

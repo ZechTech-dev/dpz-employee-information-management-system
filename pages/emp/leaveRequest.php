@@ -41,6 +41,7 @@ require_once __DIR__ . '/../../components/header.php';
         <div class="space"></div>
         <section class=" yearFilter">
 
+            <div class="space"></div>
             <div class="leave">
                 <div class="calc">
                     <h1>Total Number of Request: <?php echo $numberOfRequests; ?></h1>
@@ -130,24 +131,24 @@ require_once __DIR__ . '/../../components/header.php';
 
                 <tbody>
 
-                    <?php while ($row = $result->fetch_assoc()): ?>
+                    <?php while ($row = $leaveResult->fetch_assoc()): ?>
 
                         <tr>
 
                             <td>
-                                <?php echo (htmlspecialchars($row['leave_type'])) ?>
+                                <?= htmlspecialchars($row['leave_type']) ?>
                             </td>
 
                             <td>
-                                <?php echo (date("F j, Y", strtotime($row['applied_at']))) ?>
+                                <?= date("F j, Y", strtotime($row['applied_at'])) ?>
                             </td>
 
                             <td>
-                                <?php echo (date("F j, Y", strtotime($row['start_date']))) ?>
+                                <?= date("F j, Y", strtotime($row['start_date'])) ?>
                             </td>
 
                             <td>
-                                <?php echo (date("F j, Y", strtotime($row['end_date']))) ?>
+                                <?= date("F j, Y", strtotime($row['end_date'])) ?>
                             </td>
 
                             <td>
@@ -167,8 +168,9 @@ require_once __DIR__ . '/../../components/header.php';
                             </td>
 
                             <td>
-                                <button class="btn-view"
-                                    onclick="openLeaveModal(<?= $row['request_id'] ?>)">
+                                <button
+                                    class="btn-view"
+                                    onclick="openLeaveModal(<?= (int) $row['request_id'] ?>)">
                                     View
                                 </button>
                             </td>
@@ -178,6 +180,8 @@ require_once __DIR__ . '/../../components/header.php';
                     <?php endwhile; ?>
 
                 </tbody>
+
+
 
 
             </table>
@@ -339,7 +343,7 @@ require_once __DIR__ . '/../../components/header.php';
 
                 <form
                     id="leaveForm"
-                    action="/dpz-eims/process/leaveRequestProcess.php"
+                    action="/dpz-eims/process/emp/leaveRequestProcess.php"
                     method="POST">
 
                     <!-- STEP 1 -->

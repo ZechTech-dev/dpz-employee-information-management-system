@@ -76,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-
     if ($action === 'break_in') {
 
         $stmt = $connected->prepare("
@@ -110,7 +109,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-
     if ($action === 'break_out') {
 
         $stmt = $connected->prepare("
@@ -138,7 +136,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $stmt = $connected->prepare("
-            SELECT break_out, break_hours
+            SELECT
+                break_out,
+                break_hours
             FROM attendance
             WHERE employee_id = ?
             AND date = CURDATE()
@@ -157,7 +157,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         exit;
     }
-
 
     if ($action === 'time_out') {
 
@@ -214,7 +213,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-
     echo json_encode([
         "success" => false,
         "message" => "Invalid action."
@@ -222,7 +220,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     exit;
 }
-
 
 $limit = 8;
 
@@ -248,7 +245,6 @@ if ($page > $totalPages) {
 }
 
 $offset = ($page - 1) * $limit;
-
 
 $stmt = $connected->prepare("
     SELECT
@@ -278,3 +274,63 @@ $stmt->bind_param(
 $stmt->execute();
 
 $result = $stmt->get_result();
+
+$limit = 8;
+
+$page = isset($_GET['page'])
+    ? max(1, (int) $_GET['page'])
+    : 1;
+
+$stmt = $connected->prepare("
+    SELECT COUNT(*) AS total
+    FROM attendance
+    WHERE employee_id = ?
+");
+
+$stmt->bind_param("s", $employee_id);
+$stmt->execute();
+
+$totalRows = $stmt->get_result()->fetch_assoc()['total'];
+
+$totalPages = max(1, ceil($totalRows / $limit));
+
+if ($page > $totalPages) {
+    $page = $totalPages;
+}
+
+$offset = ($page - 1) * $limit;
+
+$stmt = $connected->prepare("
+    SELECT
+        attendance_id,
+        date,
+        time_in,
+        time_out,
+        break_in,
+        break_out,
+        status,
+        break_hours,
+        total_hours,
+        overtime_hours
+    FROM attendance
+    WHERE employee_id = ?
+    ORDER BY date DESC
+    LIMIT ? OFFSET ?
+");
+
+$stmt->bind_param(
+    "sii",
+    $employee_id,
+    $limit,
+    $offset
+);
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+$attendanceRecords = [];
+
+while ($row = $result->fetch_assoc()) {
+    $attendanceRecords[] = $row;
+}

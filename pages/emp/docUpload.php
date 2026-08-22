@@ -136,9 +136,9 @@
 
                             <tbody id="documentTableBody">
 
-                                <?php if ($result->num_rows > 0): ?>
+                                <?php if (count($documents) > 0): ?>
 
-                                    <?php while ($document = $result->fetch_assoc()): ?>
+                                    <?php foreach ($documents as $document): ?>
 
                                         <tr class="document-row">
 
@@ -186,7 +186,7 @@
 
                                         </tr>
 
-                                    <?php endwhile; ?>
+                                    <?php endforeach; ?>
 
                                 <?php else: ?>
 

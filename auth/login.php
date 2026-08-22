@@ -2,10 +2,6 @@
 
 require_once '../config/session.php';
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,8 +31,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
             <div class="divider"></div>
             <h1 class="system-title">
-                Employee Information<br>
-                Management System
+                Staff Information System
             </h1>
 
             <p>Sign in to access the system</p>

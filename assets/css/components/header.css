@@ -5,7 +5,7 @@
     left:270px;
     right:0;
     width:auto;
-    height:56px;
+    height:70px;
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -27,7 +27,7 @@
     margin:0;
     color:#102a52;
     font-family:"Outfit",sans-serif;
-    font-size:17px;
+    font-size:20px;
     font-weight:700;
     line-height:1;
 }

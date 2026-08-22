@@ -127,5 +127,5 @@ $_SESSION['login_success'] = true;
 // 8. REDIRECT TO DASHBOARD
 // ======================================================
 
-header("Location: /dpz-eims/pages/dashboard.php");
+header("Location: /dpz-eims/pages/common/dashboard.php");
 exit;
